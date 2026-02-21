@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkFlexConfig;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -27,9 +23,22 @@ public final class Constants {
     public static final int RIGHT_LEADER_ID = 2;
     public static final int RIGHT_FOLLOWER_ID = 4;
 
+    // CAN IDs for drivetrain sensors
+    public static final int CANCODER_LEFT_ID = 9;
+    public static final int CANCODER_RIGHT_ID = 10;
+    public static final int PIGEON2_ID = 11;
+
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
+
+    // Wheel and drivetrain geometry — measure these on your robot and update!
+    // Wheel diameter in meters (6-inch Colson = ~0.1524 m)
+    public static final double WHEEL_DIAMETER_METERS = 0.1524;
+    // Distance between the left and right wheels, measured center-to-center (meters)
+    public static final double TRACK_WIDTH_METERS = 0.56;
+    // Gear reduction between the motor and the wheel axle (motor turns : 1 wheel turn)
+    public static final double DRIVE_GEAR_RATIO = 10.71;
   }
 
   public static final class FuelConstants {
