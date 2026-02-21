@@ -17,9 +17,11 @@ import frc.robot.commands.Eject;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.LaunchSequenceWithAim;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -33,6 +35,7 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -74,7 +77,10 @@ public class RobotContainer {
     driverController.leftBumper().whileTrue(new Intake(fuelSubsystem));
     // While the right bumper on the operator controller is held, spin up for 1
     // second, then launch fuel. When the button is released, stop.
+    // While the right bumper is held, spin up and launch without vision aiming
     driverController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+    // While B is held, aim at the target using Limelight, then spin up and launch
+    driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
     driverController.a().whileTrue(new Eject(fuelSubsystem));

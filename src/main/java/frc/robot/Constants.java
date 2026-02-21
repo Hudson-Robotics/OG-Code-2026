@@ -76,5 +76,20 @@ public final class Constants {
     // help avoid turning too fast and beign difficult to control
     public static final double DRIVE_SCALING = 0.7;
     public static final double ROTATION_SCALING = 0.8;
-  } 
+  }
+
+  public static final class VisionConstants {
+    // Name of the Limelight as configured in the Limelight web interface
+    public static final String LIMELIGHT_NAME = "limelight";
+
+    // How close to centered (in degrees TX) we need to be before considered aimed
+    public static final double AIM_TOLERANCE_DEGREES = 1.5;
+
+    // Proportional gain for the aiming rotation output. Tune this on the robot:
+    // increase if turning is too slow, decrease if it oscillates
+    public static final double AIM_KP = 0.035;
+
+    // Maximum rotation speed (0-1) while aiming to avoid overshooting
+    public static final double AIM_MAX_OUTPUT = 0.5;
+  }
 }
