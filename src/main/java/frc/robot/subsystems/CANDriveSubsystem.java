@@ -59,7 +59,7 @@ public class CANDriveSubsystem extends SubsystemBase {
     var config = new TalonFXConfiguration()
         .withMotorOutput(new MotorOutputConfigs()
             .withNeutralMode(NeutralModeValue.Brake)
-            .withInverted(InvertedValue.CounterClockwise_Positive))
+            .withInverted(InvertedValue.Clockwise_Positive))
         .withCurrentLimits(new CurrentLimitsConfigs()
             .withStatorCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT)
             .withStatorCurrentLimitEnable(true));
@@ -71,7 +71,7 @@ public class CANDriveSubsystem extends SubsystemBase {
     // Left side is inverted so that positive values drive both sides forward
     config.withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Brake)
-        .withInverted(InvertedValue.Clockwise_Positive));
+        .withInverted(InvertedValue.CounterClockwise_Positive));
     leftLeader.getConfigurator().apply(config);
     leftFollower.getConfigurator().apply(config);
 

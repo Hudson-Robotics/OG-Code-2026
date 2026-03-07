@@ -40,7 +40,7 @@ public class CANFuelSubsystem extends SubsystemBase {
     var launcherConfig = new TalonFXConfiguration()
         .withMotorOutput(new MotorOutputConfigs()
             .withNeutralMode(NeutralModeValue.Coast)
-            .withInverted(InvertedValue.CounterClockwise_Positive))
+            .withInverted(InvertedValue.Clockwise_Positive))
         .withCurrentLimits(new CurrentLimitsConfigs()
             .withStatorCurrentLimit(LAUNCHER_MOTOR_CURRENT_LIMIT)
             .withStatorCurrentLimitEnable(true));
@@ -48,7 +48,7 @@ public class CANFuelSubsystem extends SubsystemBase {
 
     launcherConfig.withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
-        .withInverted(InvertedValue.Clockwise_Positive));
+        .withInverted(InvertedValue.CounterClockwise_Positive));
     leftIntakeLauncher.getConfigurator().apply(launcherConfig);
 
     // put default values for various fuel operations onto the dashboard
