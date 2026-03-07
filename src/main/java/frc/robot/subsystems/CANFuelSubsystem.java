@@ -4,35 +4,49 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.FuelConstants.INDEXER_INTAKING_PERCENT;
+import static frc.robot.Constants.FuelConstants.INDEXER_LAUNCHING_PERCENT;
+import static frc.robot.Constants.FuelConstants.INDEXER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.FuelConstants.INDEXER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.INTAKE_INTAKING_PERCENT;
+import static frc.robot.Constants.FuelConstants.LAUNCHER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.FuelConstants.LAUNCHING_LAUNCHER_PERCENT;
+import static frc.robot.Constants.FuelConstants.LEFT_INTAKE_LAUNCHER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.RIGHT_INTAKE_LAUNCHER_MOTOR_ID;
+
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.FuelConstants.*;
-
 public class CANFuelSubsystem extends SubsystemBase {
   private final TalonFX leftIntakeLauncher;
   private final TalonFX rightIntakeLauncher;
-  private final TalonFX indexer;
+   private final SparkMax jiggler;
 
   /** Creates a new CANFuelSubsystem. */
   public CANFuelSubsystem() {
     leftIntakeLauncher = new TalonFX(LEFT_INTAKE_LAUNCHER_MOTOR_ID);
     rightIntakeLauncher = new TalonFX(RIGHT_INTAKE_LAUNCHER_MOTOR_ID);
-    indexer = new TalonFX(INDEXER_MOTOR_ID);
+    jiggler = new SparkMax(INDEXER_MOTOR_ID, MotorType.kBrushed);
 
-    // Configure the indexer with a current limit and brake mode
-    var indexerConfig = new TalonFXConfiguration()
-        .withCurrentLimits(new CurrentLimitsConfigs()
-            .withStatorCurrentLimit(INDEXER_MOTOR_CURRENT_LIMIT)
-            .withStatorCurrentLimitEnable(true));
-    indexer.getConfigurator().apply(indexerConfig);
+
+    // the config to the controller
+    SparkMaxConfig feederConfig = new SparkMaxConfig();
+    feederConfig.smartCurrentLimit(INDEXER_MOTOR_CURRENT_LIMIT);
+    jiggler.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+
 
     // Configure the launcher rollers with a current limit and coast mode.
     // Right is not inverted; left is inverted so positive values intake and launch
@@ -70,12 +84,13 @@ public class CANFuelSubsystem extends SubsystemBase {
 
   // A method to set the voltage of the intake roller
   public void setFeederRoller(double power) {
-    indexer.set(power); // positive for shooting
+    jiggler.set(power);
+    //jiggler.set(power); // positive for shooting
   }
 
   // A method to stop the rollers
   public void stop() {
-    indexer.set(0);
+    jiggler.set(0);
     leftIntakeLauncher.set(0);
     rightIntakeLauncher.set(0);
   }
