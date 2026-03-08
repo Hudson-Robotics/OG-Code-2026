@@ -42,7 +42,7 @@ public class ClimbDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climberSubsystem.getPosition() < -70;
+    return climberSubsystem.getPosition() < -40;
     //return false;
   }
 }

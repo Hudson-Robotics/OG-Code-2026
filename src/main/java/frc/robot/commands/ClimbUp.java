@@ -42,6 +42,7 @@ public class ClimbUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climberSubsystem.getPosition() > 20;
+    //return false;
+    return climberSubsystem.getPosition() > 60;
   }
 }
