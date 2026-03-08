@@ -30,6 +30,7 @@ public class ClimbDown extends Command {
   // command doesn't require updating any values while running
   @Override
   public void execute() {
+    SmartDashboard.putNumber("Pos", climberSubsystem.getPosition());
   }
 
   // Called once the command ends or is interrupted. Stop the climber
@@ -41,6 +42,7 @@ public class ClimbDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return climberSubsystem.getPosition() < -70;
+    //return false;
   }
 }

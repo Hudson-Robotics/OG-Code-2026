@@ -38,6 +38,11 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotor.set(0);
   }
 
+  public double getPosition()
+  {
+    return climberMotor.getPosition().getValueAsDouble();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
