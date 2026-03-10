@@ -6,8 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.vision.VisionSubsystem;
 import static frc.robot.Constants.VisionConstants.*;
 
 /**
@@ -17,9 +17,9 @@ import static frc.robot.Constants.VisionConstants.*;
 public class AimAtTarget extends Command {
 
   private final VisionSubsystem visionSubsystem;
-  private final CANDriveSubsystem driveSubsystem;
+  private final DriveSubsystem driveSubsystem;
 
-  public AimAtTarget(VisionSubsystem visionSubsystem, CANDriveSubsystem driveSubsystem) {
+  public AimAtTarget(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
     this.visionSubsystem = visionSubsystem;
     this.driveSubsystem = driveSubsystem;
     addRequirements(visionSubsystem, driveSubsystem);

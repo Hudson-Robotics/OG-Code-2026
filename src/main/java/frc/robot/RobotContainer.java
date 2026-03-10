@@ -21,10 +21,20 @@ import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceWithAim;
-import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.CANFuelSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOTalonFX;
+import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.drive.DriveIO;
+import frc.robot.subsystems.drive.DriveIOTalonFX;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.fuel.FuelIO;
+import frc.robot.subsystems.fuel.FuelIOTalonFX;
+import frc.robot.subsystems.fuel.FuelSubsystem;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOLimelight;
+import frc.robot.subsystems.vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -35,10 +45,10 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
-  private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final DriveSubsystem driveSubsystem;
+  private final FuelSubsystem fuelSubsystem;
+  private final ClimberSubsystem climberSubsystem;
+  private final VisionSubsystem visionSubsystem;
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -55,6 +65,33 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Instantiate subsystems with mode-appropriate IO implementations
+    switch (Constants.currentMode) {
+      case REAL:
+        // Real robot — use actual hardware IO implementations
+        driveSubsystem = new DriveSubsystem(new DriveIOTalonFX(), new GyroIOPigeon2());
+        fuelSubsystem = new FuelSubsystem(new FuelIOTalonFX());
+        climberSubsystem = new ClimberSubsystem(new ClimberIOTalonFX());
+        visionSubsystem = new VisionSubsystem(new VisionIOLimelight());
+        break;
+
+      case SIM:
+        // Simulation — use empty IO (no physics sim yet; add sim implementations later)
+        driveSubsystem = new DriveSubsystem(new DriveIO() {}, new GyroIO() {});
+        fuelSubsystem = new FuelSubsystem(new FuelIO() {});
+        climberSubsystem = new ClimberSubsystem(new ClimberIO() {});
+        visionSubsystem = new VisionSubsystem(new VisionIO() {});
+        break;
+
+      default:
+        // Replay — use empty IO (data comes from log file)
+        driveSubsystem = new DriveSubsystem(new DriveIO() {}, new GyroIO() {});
+        fuelSubsystem = new FuelSubsystem(new FuelIO() {});
+        climberSubsystem = new ClimberSubsystem(new ClimberIO() {});
+        visionSubsystem = new VisionSubsystem(new VisionIO() {});
+        break;
+    }
+
     // Register Named Commands for PathPlanner BEFORE building the auto chooser
     NamedCommands.registerCommand("climb", new ClimbUp(climberSubsystem));
     NamedCommands.registerCommand("shoot", new LaunchSequence(fuelSubsystem));

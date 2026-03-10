@@ -5,15 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.CANDriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoDrive extends Command {
   /** Creates a new Drive. */
-  CANDriveSubsystem driveSubsystem;
+  DriveSubsystem driveSubsystem;
   double xSpeed, zRotation;
 
-  public AutoDrive(CANDriveSubsystem driveSystem, double xSpeed, double zRotation) {
+  public AutoDrive(DriveSubsystem driveSystem, double xSpeed, double zRotation) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSystem);
     driveSubsystem = driveSystem;

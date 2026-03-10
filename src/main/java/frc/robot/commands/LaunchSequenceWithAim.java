@@ -6,13 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FuelConstants;
-import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.CANFuelSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.fuel.FuelSubsystem;
+import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class LaunchSequenceWithAim extends SequentialCommandGroup {
   /** Creates a new LaunchSequenceWithAim. Aims at the target first, then spins up and launches. */
-  public LaunchSequenceWithAim(CANFuelSubsystem fuelSubsystem, VisionSubsystem visionSubsystem, CANDriveSubsystem driveSubsystem) {
+  public LaunchSequenceWithAim(FuelSubsystem fuelSubsystem, VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
     addCommands(
         new AimAtTarget(visionSubsystem, driveSubsystem),
         new SpinUp(fuelSubsystem).withTimeout(FuelConstants.SPIN_UP_SECONDS),
