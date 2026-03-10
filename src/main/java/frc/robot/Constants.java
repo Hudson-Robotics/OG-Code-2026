@@ -23,9 +23,7 @@ public final class Constants {
     public static final int RIGHT_LEADER_ID = 2;
     public static final int RIGHT_FOLLOWER_ID = 4;
 
-    // CAN IDs for drivetrain sensors
-    public static final int CANCODER_LEFT_ID = 9;
-    public static final int CANCODER_RIGHT_ID = 10;
+    // CAN ID for the Pigeon2 gyro
     public static final int PIGEON2_ID = 11;
 
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
