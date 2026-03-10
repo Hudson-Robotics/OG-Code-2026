@@ -169,12 +169,8 @@ public class CANDriveSubsystem extends SubsystemBase {
    */
   public void driveRobotRelative(ChassisSpeeds speeds) {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-    // Convert m/s wheel speeds to percent output (approximate: divide by max speed)
-    // Max free speed = (motor free speed RPM / 60 / gear ratio) * wheel circumference
-    // TalonFX (Falcon 500) free speed ≈ 6380 RPM
-    double maxSpeed = (6380.0 / 60.0 / DRIVE_GEAR_RATIO) * (Math.PI * WHEEL_DIAMETER_METERS);
-    leftLeader.set(wheelSpeeds.leftMetersPerSecond / maxSpeed);
-    rightLeader.set(wheelSpeeds.rightMetersPerSecond / maxSpeed);
+    leftLeader.set(wheelSpeeds.leftMetersPerSecond / MAX_SPEED_MPS);
+    rightLeader.set(wheelSpeeds.rightMetersPerSecond / MAX_SPEED_MPS);
   }
 
   /**

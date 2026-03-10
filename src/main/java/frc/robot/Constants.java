@@ -26,17 +26,21 @@ public final class Constants {
     // CAN ID for the Pigeon2 gyro
     public static final int PIGEON2_ID = 11;
 
-    // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
-    // likelihood of tripping breakers or damaging CIM motors
+    // Current limit for drivetrain motors (Kraken X60).
+    // 60A stator limit is a good balance of performance and breaker safety.
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
 
-    // Wheel and drivetrain geometry — measure these on your robot and update!
-    // Wheel diameter in meters (6-inch Colson = ~0.1524 m)
-    public static final double WHEEL_DIAMETER_METERS = 0.1524;
+    // Wheel and drivetrain geometry — measured on the KitBot
+    // Wheel diameter in meters (4-inch wheels = 0.1016 m)
+    public static final double WHEEL_DIAMETER_METERS = 0.1016;
     // Distance between the left and right wheels, measured center-to-center (meters)
-    public static final double TRACK_WIDTH_METERS = 0.56;
+    public static final double TRACK_WIDTH_METERS = 0.546;
     // Gear reduction between the motor and the wheel axle (motor turns : 1 wheel turn)
-    public static final double DRIVE_GEAR_RATIO = 10.71;
+    public static final double DRIVE_GEAR_RATIO = 5.143;
+
+    // Max theoretical free speed in m/s (Kraken X60 free speed ≈ 6000 RPM)
+    public static final double MAX_SPEED_MPS =
+        (6000.0 / 60.0 / DRIVE_GEAR_RATIO) * (Math.PI * WHEEL_DIAMETER_METERS);
   }
 
   public static final class FuelConstants {
