@@ -8,14 +8,16 @@ import frc.robot.subsystems.ClimberSubsystem;
 import static frc.robot.Constants.AutoConstants.*;
 
 /**
- * Autonomous routine: wait for a configurable delay, drive straight for a
- * configurable duration, then climb.
+ * Autonomous routine: climb down first, wait for a configurable delay,
+ * drive straight for a configurable duration, then climb back up.
  */
 public class DriveToClimb extends SequentialCommandGroup {
 
   public DriveToClimb(CANDriveSubsystem driveSubsystem, ClimberSubsystem climberSubsystem) {
     addCommands(
-        // Wait before doing anything
+        // Lower the climber first
+        new ClimbDown(climberSubsystem),
+        // Wait before driving
         new WaitCommand(DRIVE_TO_CLIMB_WAIT_SECONDS),
         // Drive straight for the configured time
         new AutoDrive(driveSubsystem, DRIVE_TO_CLIMB_SPEED, 0.0)
