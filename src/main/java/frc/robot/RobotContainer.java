@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
+import static frc.robot.Constants.LauncherConstants.*;
 
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
@@ -21,6 +22,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.JiggleDown;
 import frc.robot.commands.JiggleUp;
 import frc.robot.commands.JustShoot;
+import frc.robot.commands.LaunchAtSpeed;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceWithAim;
 import frc.robot.commands.ShootAndClimb;
@@ -92,6 +94,12 @@ public class RobotContainer {
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    // Operator X button - short range shot
+    operatorController.x().whileTrue(new LaunchAtSpeed(fuelSubsystem, SHORT_LAUNCH_SPEED, SHORT_FEEDER_SPEED));
+    // Operator Y button - medium range shot
+    operatorController.y().whileTrue(new LaunchAtSpeed(fuelSubsystem, MEDIUM_LAUNCH_SPEED, MEDIUM_FEEDER_SPEED));
+    // Operator B button - far range shot
+    operatorController.b().whileTrue(new LaunchAtSpeed(fuelSubsystem, FAR_LAUNCH_SPEED, FAR_FEEDER_SPEED));
    // While the down arrow on the directional pad is held it will unclimb the robot
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot

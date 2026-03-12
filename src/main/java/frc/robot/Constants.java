@@ -116,4 +116,16 @@ public final class Constants {
     public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 5.0;
     public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 10.0;
   }
+
+  public static final class LauncherConstants {
+    // Launcher roller speeds for different distances — tune these on the field
+    public static final double SHORT_LAUNCH_SPEED = -0.4;
+    public static final double MEDIUM_LAUNCH_SPEED = -0.65;
+    public static final double FAR_LAUNCH_SPEED = -0.95;
+
+    // Jiggler (feeder) speed when launching at different distances
+    public static final double SHORT_FEEDER_SPEED = 0.4;
+    public static final double MEDIUM_FEEDER_SPEED = 0.5;
+    public static final double FAR_FEEDER_SPEED = 0.6;
+  }
 }
