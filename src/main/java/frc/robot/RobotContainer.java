@@ -76,25 +76,25 @@ public class RobotContainer {
   private void configureBindings() {
 
     // While the left bumper on operator controller is held, intake Fuel
-    driverController.leftBumper().whileTrue(new Intake(fuelSubsystem));
+    operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
     // While the right bumper on the operator controller is held, spin up for 1
     // second, then launch fuel. When the button is released, stop.
     // While the right bumper is held, spin up and launch without vision aiming
-    driverController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+    operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
     // While B is held, aim at the target using Limelight, then spin up and launch
-    driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
+    //driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
-    driverController.a().whileTrue(new Eject(fuelSubsystem));
+    operatorController.a().whileTrue(new Eject(fuelSubsystem));
    // While the down arrow on the directional pad is held it will unclimb the robot
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot
     driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
-    driverController.leftTrigger().whileTrue(new JiggleDown(fuelSubsystem, () -> driverController.getLeftTriggerAxis()));
+    operatorController.leftTrigger().whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
     // While the right trigger is held, jiggle the feeder roller up (positive)
-    driverController.rightTrigger().whileTrue(new JiggleUp(fuelSubsystem, () -> driverController.getRightTriggerAxis()));
+    operatorController.rightTrigger().whileTrue(new JiggleUp(fuelSubsystem, () -> operatorController.getRightTriggerAxis()));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
