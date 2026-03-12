@@ -16,6 +16,8 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.Intake;
+import frc.robot.commands.JiggleDown;
+import frc.robot.commands.JiggleUp;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceWithAim;
 import frc.robot.subsystems.CANDriveSubsystem;
@@ -88,6 +90,11 @@ public class RobotContainer {
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot
     driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
+
+    // While the left trigger is held, jiggle the feeder roller down (negative)
+    driverController.leftTrigger().whileTrue(new JiggleDown(fuelSubsystem, () -> driverController.getLeftTriggerAxis()));
+    // While the right trigger is held, jiggle the feeder roller up (positive)
+    driverController.rightTrigger().whileTrue(new JiggleUp(fuelSubsystem, () -> driverController.getRightTriggerAxis()));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
