@@ -15,6 +15,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -35,6 +37,10 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
   private final DifferentialDriveOdometry odometry;
+
+  // Slew rate limiters to prevent jerky direction changes
+  private final SlewRateLimiter speedLimiter = new SlewRateLimiter(DRIVE_SLEW_RATE);
+  private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(ROTATION_SLEW_RATE);
 
   // Converts CANcoder rotations (at the wheel axle) to meters
   private static final double METERS_PER_ROTATION = Math.PI * WHEEL_DIAMETER_METERS;
@@ -105,6 +111,14 @@ public class CANDriveSubsystem extends SubsystemBase {
   }
 
   public void driveArcade(double xSpeed, double zRotation) {
+    // Slew rate limit to prevent jerky acceleration/deceleration
+    xSpeed = speedLimiter.calculate(xSpeed);
+    zRotation = rotationLimiter.calculate(zRotation);
+
+    // Clamp outputs to the configured maximum
+    xSpeed = MathUtil.clamp(xSpeed, -MAX_DRIVE_OUTPUT, MAX_DRIVE_OUTPUT);
+    zRotation = MathUtil.clamp(zRotation, -MAX_ROTATION_OUTPUT, MAX_ROTATION_OUTPUT);
+
     drive.arcadeDrive(xSpeed, zRotation);
   }
 
