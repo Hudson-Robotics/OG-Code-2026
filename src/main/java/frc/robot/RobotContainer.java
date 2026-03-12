@@ -25,6 +25,7 @@ import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.climber.ClimberIOTalonFX;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveIO;
+import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveIOTalonFX;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.GyroIO;
@@ -76,8 +77,8 @@ public class RobotContainer {
         break;
 
       case SIM:
-        // Simulation — use empty IO (no physics sim yet; add sim implementations later)
-        driveSubsystem = new DriveSubsystem(new DriveIO() {}, new GyroIO() {});
+        // Simulation — use physics sim for drive, empty IO for others
+        driveSubsystem = new DriveSubsystem(new DriveIOSim(), new GyroIO() {});
         fuelSubsystem = new FuelSubsystem(new FuelIO() {});
         climberSubsystem = new ClimberSubsystem(new ClimberIO() {});
         visionSubsystem = new VisionSubsystem(new VisionIO() {});

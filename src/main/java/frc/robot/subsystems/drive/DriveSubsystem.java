@@ -33,6 +33,9 @@ public class DriveSubsystem extends SubsystemBase {
   // Wheel radius in meters (used to convert from radians to meters)
   private static final double WHEEL_RADIUS_METERS = WHEEL_DIAMETER_METERS / 2.0;
 
+  // Track the raw heading derived from wheel encoders (used when no gyro is connected)
+  private double rawHeadingRad = 0.0;
+
   public DriveSubsystem(DriveIO driveIO, GyroIO gyroIO) {
     this.driveIO = driveIO;
     this.gyroIO = gyroIO;
@@ -89,20 +92,18 @@ public class DriveSubsystem extends SubsystemBase {
     if (gyroInputs.connected) {
       odometry.update(gyroInputs.yawPosition, leftDistanceMeters, rightDistanceMeters);
     } else {
-      // Derive heading from wheel encoders via kinematics
-      double leftVelocityMps = driveInputs.leftVelocityRadPerSec * WHEEL_RADIUS_METERS;
-      double rightVelocityMps = driveInputs.rightVelocityRadPerSec * WHEEL_RADIUS_METERS;
-      ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(
-          new DifferentialDriveWheelSpeeds(leftVelocityMps, rightVelocityMps));
-      // Integrate angular velocity to estimate heading change
-      Rotation2d estimatedHeading = getPose().getRotation()
-          .plus(new Rotation2d(chassisSpeeds.omegaRadiansPerSecond * 0.02));
-      odometry.update(estimatedHeading, leftDistanceMeters, rightDistanceMeters);
+      // No gyro — derive heading from the difference in wheel distances.
+      // (right - left) / trackWidth gives the heading in radians.
+      rawHeadingRad = (rightDistanceMeters - leftDistanceMeters) / TRACK_WIDTH_METERS;
+      odometry.update(new Rotation2d(rawHeadingRad), leftDistanceMeters, rightDistanceMeters);
     }
 
-    // Log the pose
-    Logger.recordOutput("Drive/Pose", getPose());
-    Logger.recordOutput("Drive/Heading Deg", getPose().getRotation().getDegrees());
+    // Log the pose — use Pose2d[] so AdvantageScope can display it on the field widget
+    Pose2d pose = getPose();
+    Logger.recordOutput("Odometry/Robot", pose);
+    Logger.recordOutput("Odometry/X", pose.getX());
+    Logger.recordOutput("Odometry/Y", pose.getY());
+    Logger.recordOutput("Odometry/HeadingDeg", pose.getRotation().getDegrees());
   }
 
   /** Drives the robot using arcade controls. */
