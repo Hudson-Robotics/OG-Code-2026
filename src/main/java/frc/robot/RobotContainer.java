@@ -13,13 +13,15 @@ import static frc.robot.Constants.OperatorConstants.*;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveToClimb;
 import frc.robot.commands.Eject;
-import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.Intake;
 import frc.robot.commands.JiggleDown;
 import frc.robot.commands.JiggleUp;
+import frc.robot.commands.JustShoot;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceWithAim;
+import frc.robot.commands.ShootAndClimb;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -59,7 +61,9 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", new ExampleAuto(driveSubsystem, fuelSubsystem));
+    autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
+    autoChooser.addOption("Just Shoot", new JustShoot(fuelSubsystem));
+    autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
   }
 
   /**

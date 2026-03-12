@@ -101,4 +101,19 @@ public final class Constants {
     // Maximum rotation speed (0-1) while aiming to avoid overshooting
     public static final double AIM_MAX_OUTPUT = 0.5;
   }
+
+  public static final class AutoConstants {
+    // DriveToClimb auto
+    public static final double DRIVE_TO_CLIMB_WAIT_SECONDS = 3.0;
+    public static final double DRIVE_TO_CLIMB_DRIVE_SECONDS = 4.0;
+    public static final double DRIVE_TO_CLIMB_SPEED = 0.5;
+
+    // JustShoot auto
+    public static final double JUST_SHOOT_SECONDS = 5.0;
+
+    // ShootAndClimb auto
+    public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.3;
+    public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 5.0;
+    public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 10.0;
+  }
 }
