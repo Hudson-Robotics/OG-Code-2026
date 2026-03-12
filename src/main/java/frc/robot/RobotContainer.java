@@ -98,14 +98,14 @@ public class RobotContainer {
     driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
 
     // While the left trigger on driver controller is held, climb down with variable speed
-    driverController.leftTrigger().whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));
+    driverController.leftTrigger(0.1).whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));
     // While the right trigger on driver controller is held, climb up with variable speed
-    driverController.rightTrigger().whileTrue(new DynamicClimbUp(climberSubsystem, () -> driverController.getRightTriggerAxis()));
+    driverController.rightTrigger(0.1).whileTrue(new DynamicClimbUp(climberSubsystem, () -> driverController.getRightTriggerAxis()));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
-    operatorController.leftTrigger().whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
+    operatorController.leftTrigger(0.1).whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
     // While the right trigger is held, jiggle the feeder roller up (positive)
-    operatorController.rightTrigger().whileTrue(new JiggleUp(fuelSubsystem, () -> operatorController.getRightTriggerAxis()));
+    operatorController.rightTrigger(0.1).whileTrue(new JiggleUp(fuelSubsystem, () -> operatorController.getRightTriggerAxis()));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
