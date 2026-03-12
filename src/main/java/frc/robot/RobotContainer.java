@@ -14,6 +14,8 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToClimb;
+import frc.robot.commands.DynamicClimbDown;
+import frc.robot.commands.DynamicClimbUp;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.JiggleDown;
@@ -94,6 +96,11 @@ public class RobotContainer {
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot
     driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
+
+    // While the left trigger on driver controller is held, climb down with variable speed
+    driverController.leftTrigger().whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));
+    // While the right trigger on driver controller is held, climb up with variable speed
+    driverController.rightTrigger().whileTrue(new DynamicClimbUp(climberSubsystem, () -> driverController.getRightTriggerAxis()));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
     operatorController.leftTrigger().whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
