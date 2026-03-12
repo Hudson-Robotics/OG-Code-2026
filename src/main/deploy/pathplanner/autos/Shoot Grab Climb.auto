@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -24,13 +24,19 @@
           }
         },
         {
-          "type": "race",
+          "type": "path",
+          "data": {
+            "pathName": "Middle"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Grab Fuel"
+                  "pathName": "Fuel"
                 }
               },
               {
@@ -45,7 +51,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Return 2 Climb"
+            "pathName": "Return 2 Side"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Climb II"
           }
         },
         {
