@@ -16,13 +16,13 @@ public class DriveToClimb extends SequentialCommandGroup {
   public DriveToClimb(CANDriveSubsystem driveSubsystem, ClimberSubsystem climberSubsystem) {
     addCommands(
         // Lower the climber first
-        new ClimbDown(climberSubsystem),
+        new ClimbUp(climberSubsystem),
         // Wait before driving
         new WaitCommand(DRIVE_TO_CLIMB_WAIT_SECONDS),
         // Drive straight for the configured time
         new AutoDrive(driveSubsystem, DRIVE_TO_CLIMB_SPEED, 0.0)
             .withTimeout(DRIVE_TO_CLIMB_DRIVE_SECONDS),
         // Climb up (ClimbUp ends automatically when position > 60)
-        new ClimbUp(climberSubsystem));
+        new ClimbDown(climberSubsystem));
   }
 }

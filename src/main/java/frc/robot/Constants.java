@@ -80,8 +80,8 @@ public final class Constants {
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 80;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.90;
-    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.90;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.95;
+    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.95;
   }
 
   public static final class OperatorConstants {
@@ -115,7 +115,7 @@ public final class Constants {
   public static final class AutoConstants {
     // DriveToClimb auto
     public static final double DRIVE_TO_CLIMB_WAIT_SECONDS = 3.0;
-    public static final double DRIVE_TO_CLIMB_DRIVE_SECONDS = 4.0;
+    public static final double DRIVE_TO_CLIMB_DRIVE_SECONDS = 2.0;
     public static final double DRIVE_TO_CLIMB_SPEED = 0.5;
 
     // JustShoot auto
@@ -123,8 +123,8 @@ public final class Constants {
 
     // ShootAndClimb auto
     public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.3;
-    public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 5.0;
-    public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 10.0;
+    public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 2.0;
+    public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 2.0;
   }
 
   public static final class LauncherConstants {

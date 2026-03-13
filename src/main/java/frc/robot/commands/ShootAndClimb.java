@@ -19,6 +19,7 @@ public class ShootAndClimb extends SequentialCommandGroup {
       ClimberSubsystem climberSubsystem) {
     addCommands(
         // Drive slowly and shoot at the same time
+        new ClimbUp(climberSubsystem),
         new ParallelCommandGroup(
             // Drive at a slower speed for the configured time
             new AutoDrive(driveSubsystem, SHOOT_AND_CLIMB_DRIVE_SPEED, 0.0)
@@ -28,6 +29,6 @@ public class ShootAndClimb extends SequentialCommandGroup {
                 new SpinUp(fuelSubsystem).withTimeout(FuelConstants.SPIN_UP_SECONDS),
                 new Launch(fuelSubsystem).withTimeout(SHOOT_AND_CLIMB_SHOOT_SECONDS))),
         // Once both are done, climb
-        new ClimbUp(climberSubsystem));
+        new ClimbDown(climberSubsystem));
   }
 }
