@@ -43,7 +43,7 @@ public final class Constants {
     // Maximum rate of change for drive output (units per second).
     // A value of 1.0 means it takes 1 second to go from 0 to full speed.
     // Lower values = smoother but slower response. Higher = snappier.
-    public static final double DRIVE_SLEW_RATE = 1.5;
+    public static final double DRIVE_SLEW_RATE = 4;
     public static final double ROTATION_SLEW_RATE = 2.0;
 
     // Clamp drive output to this maximum magnitude (0 to 1)
@@ -119,12 +119,14 @@ public final class Constants {
     public static final double DRIVE_TO_CLIMB_SPEED = 0.5;
 
     // JustShoot auto
+    public static final double JUST_SHOOT_DRIVE_SPEED = 0.4;
+    public static final double JUST_SHOOT_DRIVE_SECONDS = 1.5;
     public static final double JUST_SHOOT_SECONDS = 5.0;
 
     // ShootAndClimb auto
     public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.5;
     public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 2.0;
-    public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 2.0;
+    public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 4.0;
   }
 
   public static final class LauncherConstants {

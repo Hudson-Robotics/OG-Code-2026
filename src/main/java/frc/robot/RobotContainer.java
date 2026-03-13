@@ -69,7 +69,7 @@ public class RobotContainer {
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
     autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
-    autoChooser.addOption("Just Shoot", new JustShoot(fuelSubsystem));
+    autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem));
     autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
   
     SmartDashboard.putData(autoChooser);
