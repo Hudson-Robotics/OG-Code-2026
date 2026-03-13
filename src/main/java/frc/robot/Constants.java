@@ -122,7 +122,7 @@ public final class Constants {
     public static final double JUST_SHOOT_SECONDS = 5.0;
 
     // ShootAndClimb auto
-    public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.3;
+    public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.5;
     public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 2.0;
     public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 2.0;
   }
