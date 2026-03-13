@@ -20,6 +20,8 @@ import frc.robot.commands.DynamicClimbDown;
 import frc.robot.commands.DynamicClimbUp;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeDown;
+import frc.robot.commands.IntakeUp;
 import frc.robot.commands.JiggleDown;
 import frc.robot.commands.JiggleUp;
 import frc.robot.commands.JustShoot;
@@ -97,10 +99,10 @@ public class RobotContainer {
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
-    // Operator X button - short range shot
-    operatorController.x().whileTrue(new LaunchAtSpeed(fuelSubsystem, SHORT_LAUNCH_SPEED, SHORT_FEEDER_SPEED));
-    // Operator Y button - medium range shot
-    operatorController.y().whileTrue(new LaunchAtSpeed(fuelSubsystem, MEDIUM_LAUNCH_SPEED, MEDIUM_FEEDER_SPEED));
+    // Operator X button - intake down (reverse intake launcher roller)
+    operatorController.x().whileTrue(new IntakeDown(fuelSubsystem, () -> 1.0));
+    // Operator Y button - intake up (forward intake launcher roller)
+    operatorController.y().whileTrue(new IntakeUp(fuelSubsystem, () -> 1.0));
     // Operator B button - far range shot
     operatorController.b().whileTrue(new LaunchAtSpeed(fuelSubsystem, FAR_LAUNCH_SPEED, FAR_FEEDER_SPEED));
    // While the down arrow on the directional pad is held it will unclimb the robot

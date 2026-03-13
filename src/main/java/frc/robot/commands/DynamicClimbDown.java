@@ -34,6 +34,7 @@ public class DynamicClimbDown extends Command {
 
   @Override
   public boolean isFinished() {
-    return climberSubsystem.getPosition() < -40;
+    //return climberSubsystem.getPosition() < -40;
+    return false;
   }
 }
