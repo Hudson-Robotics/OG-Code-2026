@@ -63,8 +63,8 @@ public final class Constants {
 
     // All values likely need to be tuned based on your robot
     public static final double INDEXER_INTAKING_PERCENT = -.8; 
-    public static final double INDEXER_LAUNCHING_PERCENT = 0.6;
-    public static final double INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.5;
+    public static final double INDEXER_LAUNCHING_PERCENT = 0.7;
+    public static final double INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.6;
 
     public static final double INTAKE_INTAKING_PERCENT = -0.7;
     public static final double LAUNCHING_LAUNCHER_PERCENT = -.95;
@@ -83,7 +83,7 @@ public final class Constants {
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.95;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.95;
 
-    public static final double CLIMBER_SLEW_RATE = 1.0;
+    public static final double CLIMBER_SLEW_RATE = 0.25;
   }
 
   public static final class OperatorConstants {
@@ -122,8 +122,8 @@ public final class Constants {
 
     // JustShoot auto
     public static final double JUST_SHOOT_DRIVE_SPEED = 0.4;
-    public static final double JUST_SHOOT_DRIVE_SECONDS = 1.5;
-    public static final double JUST_SHOOT_SECONDS = 5.0;
+    public static final double JUST_SHOOT_DRIVE_SECONDS = 1.867;
+    public static final double JUST_SHOOT_SECONDS = 15.0;
 
     // ShootAndClimb auto
     public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.5;
