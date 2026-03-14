@@ -6,16 +6,19 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ClimbConstatns.*;
 
 public class ClimberSubsystem extends SubsystemBase {
   private final TalonFX climberMotor;
+  private final SlewRateLimiter slewRateLimiter;
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
     climberMotor = new TalonFX(CLIMBER_MOTOR_ID);
+    slewRateLimiter = new SlewRateLimiter(CLIMBER_SLEW_RATE);
 
     // Configure the climber motor with a current limit and brake mode
     var climbConfig = new TalonFXConfiguration()
@@ -28,13 +31,14 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotor.getConfigurator().apply(climbConfig);
   }
 
-  // A method to set the percentage of the climber
+  // A method to set the percentage of the climber, ramped by the slew rate limiter
   public void setClimber(double power) {
-    climberMotor.set(power);
+    climberMotor.set(slewRateLimiter.calculate(power));
   }
 
-  // A method to stop the climber
+  // A method to stop the climber and reset the slew rate limiter
   public void stop() {
+    slewRateLimiter.reset(0);
     climberMotor.set(0);
   }
 

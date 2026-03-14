@@ -82,6 +82,8 @@ public final class Constants {
     // Percentage to power the motor both up and down
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.95;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.95;
+
+    public static final double CLIMBER_SLEW_RATE = 1.0;
   }
 
   public static final class OperatorConstants {
