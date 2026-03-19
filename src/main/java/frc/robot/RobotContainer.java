@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.LauncherConstants.*;
+import static frc.robot.Constants.ClimbConstatns.*;
 
 import frc.robot.commands.ClimbDown;
+import frc.robot.commands.ClimbToPosition;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToClimb;
@@ -120,6 +122,12 @@ public class RobotContainer {
     driverController.leftTrigger(0.1).whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));
     // While the right trigger on driver controller is held, climb up with variable speed
     driverController.rightTrigger(0.1).whileTrue(new DynamicClimbUp(climberSubsystem, () -> driverController.getRightTriggerAxis()));
+
+    // Climb-to-position presets (driver face buttons)
+    // A = Floor (retracted), B = Tier 1 (mid), Y = Tier 2 (full extension)
+    driverController.a().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_FLOOR_POSITION));
+    driverController.b().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_1_POSITION));
+    driverController.y().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_2_POSITION));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
     operatorController.leftTrigger(0.1).whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
