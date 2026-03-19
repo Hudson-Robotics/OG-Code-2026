@@ -25,9 +25,13 @@ public class VisionSubsystem extends SubsystemBase {
   public VisionSubsystem() {
   }
 
-  /** Returns true if the Limelight has a valid target. */
+  // -------------------------------------------------------------------------
+  //  Front Limelight — used for aiming and shooting at the hub
+  // -------------------------------------------------------------------------
+
+  /** Returns true if the front Limelight has a valid target. */
   public boolean hasTarget() {
-    return LimelightHelpers.getTV(LIMELIGHT_NAME);
+    return LimelightHelpers.getTV(LIMELIGHT_FRONT_NAME);
   }
 
   /**
@@ -35,7 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
    * Negative = target is to the left, Positive = target is to the right.
    */
   public double getTX() {
-    return LimelightHelpers.getTX(LIMELIGHT_NAME);
+    return LimelightHelpers.getTX(LIMELIGHT_FRONT_NAME);
   }
 
   /**
@@ -43,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
    * Negative = target is below, Positive = target is above.
    */
   public double getTY() {
-    return LimelightHelpers.getTY(LIMELIGHT_NAME);
+    return LimelightHelpers.getTY(LIMELIGHT_FRONT_NAME);
   }
 
   /** Returns true if the robot is aimed at the target within the tolerance. */
@@ -52,8 +56,8 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the raw PoseEstimate from the Limelight using the WPILib Blue origin,
-   * or null if no tags are visible or the estimate is considered unreliable.
+   * Returns the raw PoseEstimate from the front Limelight using the WPILib Blue
+   * origin, or null if no tags are visible or the estimate is considered unreliable.
    *
    * Reliability checks:
    *  - At least one tag must be visible
@@ -61,7 +65,7 @@ public class VisionSubsystem extends SubsystemBase {
    *  - If only one tag is visible, it must be within MAX_SINGLE_TAG_DISTANCE inches
    */
   public PoseEstimate getPoseEstimate() {
-    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(LIMELIGHT_NAME);
+    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(LIMELIGHT_FRONT_NAME);
 
     if (estimate == null || estimate.tagCount == 0) {
       return null;
@@ -83,8 +87,8 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the robot's estimated field-relative Pose2d, or null if the
-   * estimate is unavailable or unreliable.
+   * Returns the robot's estimated field-relative Pose2d from the front Limelight,
+   * or null if the estimate is unavailable or unreliable.
    */
   public Pose2d getRobotPose() {
     PoseEstimate estimate = getPoseEstimate();
@@ -92,11 +96,11 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns an array of AprilTagLocations for all tags currently visible,
-   * skipping any tag IDs not found in the AprilTagLocation enum.
+   * Returns an array of AprilTagLocations for all tags currently visible
+   * on the front Limelight, skipping any tag IDs not found in the enum.
    */
   public AprilTagLocation[] getVisibleTags() {
-    RawFiducial[] fiducials = LimelightHelpers.getRawFiducials(LIMELIGHT_NAME);
+    RawFiducial[] fiducials = LimelightHelpers.getRawFiducials(LIMELIGHT_FRONT_NAME);
     if (fiducials == null || fiducials.length == 0) {
       return new AprilTagLocation[0];
     }
@@ -114,6 +118,52 @@ public class VisionSubsystem extends SubsystemBase {
       if (tag != null) tags[i++] = tag;
     }
     return tags;
+  }
+
+  /**
+   * Returns the average distance (in inches) from the robot to all currently
+   * visible AprilTags on the front Limelight, or -1 if no tags are visible.
+   */
+  public double getAvgTagDistance() {
+    RawFiducial[] fiducials = LimelightHelpers.getRawFiducials(LIMELIGHT_FRONT_NAME);
+    if (fiducials == null || fiducials.length == 0) {
+      return -1;
+    }
+    double sum = 0;
+    for (RawFiducial f : fiducials) {
+      sum += f.distToRobot;
+    }
+    return sum / fiducials.length;
+  }
+
+  /**
+   * Returns true if the robot is both aimed (TX within tolerance) and at
+   * the target distance from the hub (within distanceToleranceInches).
+   */
+  public boolean isAimedAndInRange(double targetDistanceInches, double distanceToleranceInches) {
+    if (!isAimed()) return false;
+    double dist = getAvgTagDistance();
+    if (dist < 0) return false;
+    return Math.abs(dist - targetDistanceInches) <= distanceToleranceInches;
+  }
+
+  // -------------------------------------------------------------------------
+  //  Back Limelight — available for future use (intake tracking, etc.)
+  // -------------------------------------------------------------------------
+
+  /** Returns true if the back Limelight has a valid target. */
+  public boolean hasTargetBack() {
+    return LimelightHelpers.getTV(LIMELIGHT_BACK_NAME);
+  }
+
+  /** Returns the horizontal offset from the back Limelight crosshair in degrees. */
+  public double getTXBack() {
+    return LimelightHelpers.getTX(LIMELIGHT_BACK_NAME);
+  }
+
+  /** Returns the vertical offset from the back Limelight crosshair in degrees. */
+  public double getTYBack() {
+    return LimelightHelpers.getTY(LIMELIGHT_BACK_NAME);
   }
 
   @Override
@@ -136,5 +186,10 @@ public class VisionSubsystem extends SubsystemBase {
     for (int i = 0; i < tags.length; i++) {
       SmartDashboard.putString("Vision/Tag " + i, tags[i].toString());
     }
+
+    // Back Limelight telemetry
+    SmartDashboard.putBoolean("Vision/Back Has Target", hasTargetBack());
+    SmartDashboard.putNumber("Vision/Back TX", getTXBack());
+    SmartDashboard.putNumber("Vision/Back TY", getTYBack());
   }
 }

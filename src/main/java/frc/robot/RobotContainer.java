@@ -29,6 +29,9 @@ import frc.robot.commands.LaunchAtSpeed;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceWithAim;
 import frc.robot.commands.ShootAndClimb;
+import frc.robot.commands.ShootUsingDepot;
+import frc.robot.commands.ShootUsingNeutralZoneLeft;
+import frc.robot.commands.ShootUsingNeutralZoneRight;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -71,6 +74,9 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
     autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem));
     autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
+    autoChooser.addOption("Shoot Using Depot", new ShootUsingDepot(driveSubsystem, fuelSubsystem, visionSubsystem));
+    autoChooser.addOption("Shoot Using Neutral Zone Left", new ShootUsingNeutralZoneLeft(driveSubsystem, fuelSubsystem, visionSubsystem));
+    autoChooser.addOption("Shoot Using Neutral Zone Right", new ShootUsingNeutralZoneRight(driveSubsystem, fuelSubsystem, visionSubsystem));
   
     SmartDashboard.putData(autoChooser);
   }

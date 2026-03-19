@@ -100,8 +100,10 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    // Name of the Limelight as configured in the Limelight web interface
+    // Names of the Limelights as configured in the Limelight web interface
     public static final String LIMELIGHT_NAME = "limelight";
+    public static final String LIMELIGHT_FRONT_NAME = "limelight";
+    public static final String LIMELIGHT_BACK_NAME = "limelight-back";
 
     // How close to centered (in degrees TX) we need to be before considered aimed
     public static final double AIM_TOLERANCE_DEGREES = 1.5;
@@ -112,6 +114,18 @@ public final class Constants {
 
     // Maximum rotation speed (0-1) while aiming to avoid overshooting
     public static final double AIM_MAX_OUTPUT = 0.5;
+
+    // Target distance from the hub in inches (~6 feet)
+    public static final double AIM_TARGET_DISTANCE_INCHES = 72.0;
+    // How close to the target distance (in inches) before we consider it "in range"
+    public static final double AIM_DISTANCE_TOLERANCE_INCHES = 4.0;
+    // Proportional gain for the distance (forward/back) correction
+    public static final double AIM_DISTANCE_KP = 0.006;
+    // Maximum forward/backward speed while ranging to avoid overshooting
+    public static final double AIM_DISTANCE_MAX_OUTPUT = 0.35;
+
+    // Proportional gain for the Pigeon heading correction during straight driving
+    public static final double HEADING_CORRECTION_KP = 0.02;
   }
 
   public static final class AutoConstants {
@@ -129,6 +143,35 @@ public final class Constants {
     public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.5;
     public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 2.0;
     public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 4.0;
+
+    // ShootUsingDepot auto
+    public static final double DEPOT_DRIVE_SPEED = 0.4;
+    public static final double DEPOT_DRIVE_SECONDS = 2.5;          // N seconds forward with intake
+    public static final double DEPOT_BACKUP_SECONDS = 1.25;        // N/2 seconds backing up
+    public static final double DEPOT_BACKUP_SPEED = -0.4;
+    public static final double DEPOT_SPIN_DEGREES = 135.0;         // Spin to 135 degrees
+    public static final double DEPOT_SHOOT_SECONDS = 4.0;
+
+    // ShootUsingNeutralZoneLeft auto
+    public static final double NZ_LEFT_DRIVE_SPEED = 0.4;
+    public static final double NZ_LEFT_DRIVE_SECONDS = 2.5;        // N seconds forward
+    public static final double NZ_LEFT_BACKUP_SECONDS = 3.0;       // 1.2N seconds backing up
+    public static final double NZ_LEFT_BACKUP_SPEED = -0.4;
+    public static final double NZ_LEFT_SPIN_DEGREES = -45.0;       // Spin -45 degrees (left to face hub)
+    public static final double NZ_LEFT_SHOOT_SECONDS = 4.0;
+
+    // ShootUsingNeutralZoneRight auto
+    public static final double NZ_RIGHT_DRIVE_SPEED = 0.4;
+    public static final double NZ_RIGHT_DRIVE_SECONDS = 2.5;       // N seconds forward
+    public static final double NZ_RIGHT_BACKUP_SECONDS = 3.0;      // 1.2N seconds backing up
+    public static final double NZ_RIGHT_BACKUP_SPEED = -0.4;
+    public static final double NZ_RIGHT_SPIN_DEGREES = 45.0;       // Spin 45 degrees (right to face hub)
+    public static final double NZ_RIGHT_SHOOT_SECONDS = 4.0;
+
+    // Turn-to-angle PID
+    public static final double TURN_KP = 0.02;
+    public static final double TURN_TOLERANCE_DEGREES = 2.0;
+    public static final double TURN_MAX_OUTPUT = 0.5;
   }
 
   public static final class LauncherConstants {

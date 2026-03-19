@@ -11,8 +11,10 @@ import frc.robot.subsystems.VisionSubsystem;
 import static frc.robot.Constants.VisionConstants.*;
 
 /**
- * Rotates the robot in place until the Limelight target is centered within
- * AIM_TOLERANCE_DEGREES. Ends immediately if no target is visible.
+ * Rotates the robot in place to center the Limelight target AND drives
+ * forward/backward until the robot is approximately 6 feet (~72 inches)
+ * from the hub AprilTags. Ends when both the horizontal aim and distance
+ * are within tolerance, or immediately if no target is visible.
  */
 public class AimAtTarget extends Command {
 
@@ -36,14 +38,27 @@ public class AimAtTarget extends Command {
       return;
     }
 
-    // Proportional rotation: positive TX means target is to the right,
-    // so we rotate right (positive zRotation in arcade drive)
+    // --- Rotation: centre the target horizontally ---
+    // Positive TX means target is to the right → rotate right (positive zRotation)
     double rotation = MathUtil.clamp(
         visionSubsystem.getTX() * AIM_KP,
         -AIM_MAX_OUTPUT,
         AIM_MAX_OUTPUT);
 
-    driveSubsystem.driveArcade(0, rotation);
+    // --- Distance: drive forward/backward to reach target distance ---
+    double speed = 0;
+    double currentDistance = visionSubsystem.getAvgTagDistance();
+    if (currentDistance > 0) {
+      // Positive error = too far away → drive forward (positive speed)
+      // Negative error = too close   → drive backward (negative speed)
+      double distanceError = currentDistance - AIM_TARGET_DISTANCE_INCHES;
+      speed = MathUtil.clamp(
+          distanceError * AIM_DISTANCE_KP,
+          -AIM_DISTANCE_MAX_OUTPUT,
+          AIM_DISTANCE_MAX_OUTPUT);
+    }
+
+    driveSubsystem.driveArcade(speed, rotation);
   }
 
   @Override
@@ -53,7 +68,11 @@ public class AimAtTarget extends Command {
 
   @Override
   public boolean isFinished() {
-    // End when aimed or when no target is visible
-    return visionSubsystem.isAimed() || !visionSubsystem.hasTarget();
+    if (!visionSubsystem.hasTarget()) {
+      return true;
+    }
+    // End when both aimed AND at the correct distance
+    return visionSubsystem.isAimedAndInRange(
+        AIM_TARGET_DISTANCE_INCHES, AIM_DISTANCE_TOLERANCE_INCHES);
   }
 }
