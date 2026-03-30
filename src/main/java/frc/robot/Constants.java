@@ -43,8 +43,8 @@ public final class Constants {
     // Maximum rate of change for drive output (units per second).
     // A value of 1.0 means it takes 1 second to go from 0 to full speed.
     // Lower values = smoother but slower response. Higher = snappier.
-    public static final double DRIVE_SLEW_RATE = 4;
-    public static final double ROTATION_SLEW_RATE = 2.0;
+    public static final double DRIVE_SLEW_RATE = 5;
+    public static final double ROTATION_SLEW_RATE = 4.0;
 
     // Clamp drive output to this maximum magnitude (0 to 1)
     public static final double MAX_DRIVE_OUTPUT = 1.0;
@@ -80,7 +80,7 @@ public final class Constants {
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 80;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.95;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.3867;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.95;
 
     public static final double CLIMBER_SLEW_RATE = 0.25;

@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.climberMotor;
 
 import static frc.robot.Constants.AutoConstants.*;
 
@@ -13,8 +15,9 @@ import static frc.robot.Constants.AutoConstants.*;
  */
 public class JustShoot extends SequentialCommandGroup {
 
-  public JustShoot(CANDriveSubsystem driveSubsystem, CANFuelSubsystem fuelSubsystem) {
+  public JustShoot(CANDriveSubsystem driveSubsystem, CANFuelSubsystem fuelSubsystem, ClimberSubsystem climberSubsystem) {
     addCommands(
+      new ClimbUp(climberSubsystem),
         // Drive forward first
         new AutoDrive(driveSubsystem, JUST_SHOOT_DRIVE_SPEED, 0.0)
             .withTimeout(JUST_SHOOT_DRIVE_SECONDS),

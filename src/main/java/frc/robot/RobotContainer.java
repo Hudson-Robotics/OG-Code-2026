@@ -14,7 +14,7 @@ import static frc.robot.Constants.LauncherConstants.*;
 import static frc.robot.Constants.ClimbConstatns.*;
 
 import frc.robot.commands.ClimbDown;
-import frc.robot.commands.ClimbToPosition;
+//import frc.robot.commands.ClimbToPosition;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToClimb;
@@ -74,7 +74,7 @@ public class RobotContainer {
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
     autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
-    autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem, climberSubsystem ));
     autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
     autoChooser.addOption("Shoot Using Depot", new ShootUsingDepot(driveSubsystem, fuelSubsystem, visionSubsystem));
     autoChooser.addOption("Shoot Using Neutral Zone Left", new ShootUsingNeutralZoneLeft(driveSubsystem, fuelSubsystem, visionSubsystem));
@@ -125,9 +125,9 @@ public class RobotContainer {
 
     // Climb-to-position presets (driver face buttons)
     // A = Floor (retracted), B = Tier 1 (mid), Y = Tier 2 (full extension)
-    driverController.a().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_FLOOR_POSITION));
-    driverController.b().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_1_POSITION));
-    driverController.y().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_2_POSITION));
+    // driverController.a().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_FLOOR_POSITION));
+    // driverController.b().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_1_POSITION));
+    // driverController.y().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_2_POSITION));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
     operatorController.leftTrigger(0.1).whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));

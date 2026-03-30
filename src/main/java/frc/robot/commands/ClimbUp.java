@@ -43,6 +43,6 @@ public class ClimbUp extends Command {
   @Override
   public boolean isFinished() {
     //return false;
-    return climberSubsystem.getPosition() > 0;
+    return climberSubsystem.getPosition() > 365;
   }
 }
