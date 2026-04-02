@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.LauncherConstants.*;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
@@ -60,15 +63,23 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Register named commands for PathPlanner autos BEFORE building any auto.
+    // These names must match the named commands used in PathPlanner auto files.
+    NamedCommands.registerCommand("Intake", new Intake(fuelSubsystem));
+    NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
+    NamedCommands.registerCommand("ClimbUp", new ClimbUp(climberSubsystem));
+    NamedCommands.registerCommand("ClimbDown", new ClimbDown(climberSubsystem));
+
     configureBindings();
 
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
-    autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem, climberSubsystem ));
-    autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
-  
+    autoChooser.setDefaultOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
+    autoChooser.addOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
+    autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem, climberSubsystem));
+    autoChooser.addOption("PP Depot And Climb", AutoBuilder.buildAuto("PP Depot And Climb"));
+
     SmartDashboard.putData(autoChooser);
   }
 
