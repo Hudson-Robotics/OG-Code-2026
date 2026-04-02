@@ -40,12 +40,6 @@ public final class Constants {
     // Gear reduction between the motor and the wheel axle (motor turns : 1 wheel turn)
     public static final double DRIVE_GEAR_RATIO = 10.71;
 
-    // Maximum rate of change for drive output (units per second).
-    // A value of 1.0 means it takes 1 second to go from 0 to full speed.
-    // Lower values = smoother but slower response. Higher = snappier.
-    public static final double DRIVE_SLEW_RATE = 5;
-    public static final double ROTATION_SLEW_RATE = 4.0;
-
     // Clamp drive output to this maximum magnitude (0 to 1)
     public static final double MAX_DRIVE_OUTPUT = 1.0;
     public static final double MAX_ROTATION_OUTPUT = 1.0;
