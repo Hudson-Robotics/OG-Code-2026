@@ -1,6 +1,9 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.ClimbDown;
+import frc.robot.commands.ClimbUp;
+import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -21,6 +24,5 @@ public class ShootAndClimb extends SequentialCommandGroup {
         new LaunchSequence(fuelSubsystem)
             .withTimeout(SHOOT_AND_CLIMB_SHOOT_SECONDS),
         new ClimbDown(climberSubsystem));
-        
   }
 }
