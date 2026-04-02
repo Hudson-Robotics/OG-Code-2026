@@ -11,10 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.LauncherConstants.*;
-import static frc.robot.Constants.ClimbConstatns.*;
 
 import frc.robot.commands.ClimbDown;
-//import frc.robot.commands.ClimbToPosition;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToClimb;
@@ -29,15 +27,10 @@ import frc.robot.commands.JiggleUp;
 import frc.robot.commands.JustShoot;
 import frc.robot.commands.LaunchAtSpeed;
 import frc.robot.commands.LaunchSequence;
-import frc.robot.commands.LaunchSequenceWithAim;
 import frc.robot.commands.ShootAndClimb;
-import frc.robot.commands.ShootUsingDepot;
-import frc.robot.commands.ShootUsingNeutralZoneLeft;
-import frc.robot.commands.ShootUsingNeutralZoneRight;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,7 +44,6 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -76,9 +68,6 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Drive To Climb", new DriveToClimb(driveSubsystem, climberSubsystem));
     autoChooser.addOption("Just Shoot", new JustShoot(driveSubsystem, fuelSubsystem, climberSubsystem ));
     autoChooser.addOption("Shoot And Climb", new ShootAndClimb(driveSubsystem, fuelSubsystem, climberSubsystem));
-    autoChooser.addOption("Shoot Using Depot", new ShootUsingDepot(driveSubsystem, fuelSubsystem, visionSubsystem));
-    autoChooser.addOption("Shoot Using Neutral Zone Left", new ShootUsingNeutralZoneLeft(driveSubsystem, fuelSubsystem, visionSubsystem));
-    autoChooser.addOption("Shoot Using Neutral Zone Right", new ShootUsingNeutralZoneRight(driveSubsystem, fuelSubsystem, visionSubsystem));
   
     SmartDashboard.putData(autoChooser);
   }
@@ -122,12 +111,6 @@ public class RobotContainer {
     driverController.leftTrigger(0.1).whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));
     // While the right trigger on driver controller is held, climb up with variable speed
     driverController.rightTrigger(0.1).whileTrue(new DynamicClimbUp(climberSubsystem, () -> driverController.getRightTriggerAxis()));
-
-    // Climb-to-position presets (driver face buttons)
-    // A = Floor (retracted), B = Tier 1 (mid), Y = Tier 2 (full extension)
-    // driverController.a().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_FLOOR_POSITION));
-    // driverController.b().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_1_POSITION));
-    // driverController.y().onTrue(new ClimbToPosition(climberSubsystem, CLIMB_TIER_2_POSITION));
 
     // While the left trigger is held, jiggle the feeder roller down (negative)
     operatorController.leftTrigger(0.1).whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));

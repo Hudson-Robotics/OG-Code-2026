@@ -5,7 +5,6 @@ import frc.robot.Constants.FuelConstants;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.climberMotor;
 
 import static frc.robot.Constants.AutoConstants.*;
 

@@ -82,29 +82,6 @@ public final class Constants {
     // Percentage to power the motor both up and down
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.3867;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.95;
-
-    public static final double CLIMBER_SLEW_RATE = 0.25;
-
-    // ---- Climb-to-position preset targets (motor rotations) ----
-    // 80:1 gear ratio — these are in Kraken internal encoder units (rotor rotations).
-    // Tune on the robot by reading SmartDashboard "Climb/Position" at each height.
-    public static final double CLIMB_FLOOR_POSITION = 0.0;       // Fully retracted / home
-    public static final double CLIMB_TIER_1_POSITION = -230.0;   // Mid-height hook
-    public static final double CLIMB_TIER_2_POSITION = -460.0;   // Full extension
-
-    // ---- Motion-profile / PID gains for smooth positioning ----
-    // Proportional gain — increase if the hook is too slow reaching target
-    public static final double CLIMB_KP = 0.02;
-    // Integral gain — usually 0 unless you need to eliminate steady-state error
-    public static final double CLIMB_KI = 0.0;
-    // Derivative gain — increase to dampen oscillations
-    public static final double CLIMB_KD = 0.005;
-    // Max output (0–1) when going UP (against gravity, needs more power)
-    public static final double CLIMB_MAX_UP_OUTPUT = 0.7;
-    // Max output (0–1) when going DOWN (with gravity, limit speed to protect gears)
-    public static final double CLIMB_MAX_DOWN_OUTPUT = 0.35;
-    // How close (in motor rotations) to the target before we consider it "arrived"
-    public static final double CLIMB_POSITION_TOLERANCE = 5.0;
   }
 
   public static final class OperatorConstants {
@@ -164,35 +141,6 @@ public final class Constants {
     public static final double SHOOT_AND_CLIMB_DRIVE_SPEED = 0.5;
     public static final double SHOOT_AND_CLIMB_DRIVE_SECONDS = 2.0;
     public static final double SHOOT_AND_CLIMB_SHOOT_SECONDS = 4.0;
-
-    // ShootUsingDepot auto
-    public static final double DEPOT_DRIVE_SPEED = 0.4;
-    public static final double DEPOT_DRIVE_SECONDS = 2.5;          // N seconds forward with intake
-    public static final double DEPOT_BACKUP_SECONDS = 1.25;        // N/2 seconds backing up
-    public static final double DEPOT_BACKUP_SPEED = -0.4;
-    public static final double DEPOT_SPIN_DEGREES = 135.0;         // Spin to 135 degrees
-    public static final double DEPOT_SHOOT_SECONDS = 4.0;
-
-    // ShootUsingNeutralZoneLeft auto
-    public static final double NZ_LEFT_DRIVE_SPEED = 0.4;
-    public static final double NZ_LEFT_DRIVE_SECONDS = 2.5;        // N seconds forward
-    public static final double NZ_LEFT_BACKUP_SECONDS = 3.0;       // 1.2N seconds backing up
-    public static final double NZ_LEFT_BACKUP_SPEED = -0.4;
-    public static final double NZ_LEFT_SPIN_DEGREES = -45.0;       // Spin -45 degrees (left to face hub)
-    public static final double NZ_LEFT_SHOOT_SECONDS = 4.0;
-
-    // ShootUsingNeutralZoneRight auto
-    public static final double NZ_RIGHT_DRIVE_SPEED = 0.4;
-    public static final double NZ_RIGHT_DRIVE_SECONDS = 2.5;       // N seconds forward
-    public static final double NZ_RIGHT_BACKUP_SECONDS = 3.0;      // 1.2N seconds backing up
-    public static final double NZ_RIGHT_BACKUP_SPEED = -0.4;
-    public static final double NZ_RIGHT_SPIN_DEGREES = 45.0;       // Spin 45 degrees (right to face hub)
-    public static final double NZ_RIGHT_SHOOT_SECONDS = 4.0;
-
-    // Turn-to-angle PID
-    public static final double TURN_KP = 0.02;
-    public static final double TURN_TOLERANCE_DEGREES = 2.0;
-    public static final double TURN_MAX_OUTPUT = 0.5;
   }
 
   public static final class LauncherConstants {
