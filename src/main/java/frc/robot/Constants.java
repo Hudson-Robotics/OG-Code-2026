@@ -49,10 +49,10 @@ public final class Constants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int LEFT_INTAKE_LAUNCHER_MOTOR_ID = 5;
     public static final int RIGHT_INTAKE_LAUNCHER_MOTOR_ID = 6;
-    public static final int INDEXER_MOTOR_ID = 8;
+    public static final int CONVEYOR_MOTOR_ID = 29;
 
     // Current limit for fuel mechanism motors.
-    public static final int INDEXER_MOTOR_CURRENT_LIMIT = 80;
+    public static final int CONVEYOR_MOTOR_CURRENT_LIMIT = 80;
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 100;
 
     // All values likely need to be tuned based on your robot
