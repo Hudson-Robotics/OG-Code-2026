@@ -65,6 +65,22 @@ public final class Constants {
     public static final double INTAKE_EJECT_PERCENT = 0.9;
 
     public static final double SPIN_UP_SECONDS = 1;
+
+    // ---- Flywheel closed-loop constants (tune these!) ----
+    // kS: voltage to overcome static friction (volts). Start small.
+    public static final double FLYWHEEL_KS = 0.15;
+    // kV: voltage per unit of velocity (volts / RPS). Main feedforward term.
+    public static final double FLYWHEEL_KV = 0.12;
+    // kP: proportional gain on velocity error (volts / RPS error)
+    public static final double FLYWHEEL_KP = 0.1;
+
+    // How close the flywheel must be to the target before we consider it ready (RPS)
+    public static final double FLYWHEEL_VELOCITY_TOLERANCE_RPS = 3.0;
+    // Default target flywheel velocity for launching (rotations per second)
+    // Negative because your launch direction is negative. Tune on the robot.
+    public static final double DEFAULT_LAUNCH_RPS = -80.0;
+    // Feeder speed while the flywheel is spinning up (slow reverse to hold the ball back)
+    public static final double FLYWHEEL_SPINUP_FEEDER_PERCENT = -0.05;
   }
 
   public static final class ClimbConstatns {
@@ -84,6 +100,8 @@ public final class Constants {
     // values in the Joystick tab of the Driver Station software
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
+    // Third controller used for flywheel tuning in the pit / on the field
+    public static final int TUNER_CONTROLLER_PORT = 2;
 
     // This value is multiplied by the joystick value when rotating the robot to
     // help avoid turning too fast and beign difficult to control

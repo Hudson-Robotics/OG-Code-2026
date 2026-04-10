@@ -30,6 +30,8 @@ import frc.robot.commands.JiggleUp;
 import frc.robot.commands.auto.JustShoot;
 import frc.robot.commands.LaunchAtSpeed;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.FlywheelLaunchSequence;
+import frc.robot.commands.FlywheelTuningCommand;
 import frc.robot.commands.auto.ShootAndClimb;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
@@ -56,6 +58,10 @@ public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(
       OPERATOR_CONTROLLER_PORT);
 
+  // Third controller used for flywheel tuning in the pit / on the field
+  private final CommandXboxController tunerController = new CommandXboxController(
+      TUNER_CONTROLLER_PORT);
+
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -66,7 +72,7 @@ public class RobotContainer {
     // Register named commands for PathPlanner autos BEFORE building any auto.
     // These names must match the named commands used in PathPlanner auto files.
     NamedCommands.registerCommand("Intake", new Intake(fuelSubsystem));
-    NamedCommands.registerCommand("Shoot", new LaunchSequence(fuelSubsystem));
+    NamedCommands.registerCommand("Shoot", new FlywheelLaunchSequence(fuelSubsystem));
     NamedCommands.registerCommand("ClimbUp", new ClimbUp(climberSubsystem));
     NamedCommands.registerCommand("ClimbDown", new ClimbDown(climberSubsystem));
 
@@ -98,10 +104,9 @@ public class RobotContainer {
 
     // While the left bumper on operator controller is held, intake Fuel
     operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
-    // While the right bumper on the operator controller is held, spin up for 1
-    // second, then launch fuel. When the button is released, stop.
-    // While the right bumper is held, spin up and launch without vision aiming
-    operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+    // While the right bumper is held, spin up the flywheel to target RPS using
+    // closed-loop velocity control, then feed the ball once at speed.
+    operatorController.rightBumper().whileTrue(new FlywheelLaunchSequence(fuelSubsystem));
     // While B is held, aim at the target using Limelight, then spin up and launch
     //driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
     // While the A button is held on the operator controller, eject fuel back out
@@ -127,6 +132,12 @@ public class RobotContainer {
     operatorController.leftTrigger(0.1).whileTrue(new JiggleDown(fuelSubsystem, () -> operatorController.getLeftTriggerAxis()));
     // While the right trigger is held, jiggle the feeder roller up (positive)
     operatorController.rightTrigger(0.1).whileTrue(new JiggleUp(fuelSubsystem, () -> operatorController.getRightTriggerAxis()));
+
+    // ---- Tuner controller (3rd controller) bindings ----
+    // Hold A to run the flywheel tuning command. While held, the flywheel spins
+    // at the RPS set on the dashboard, and gains can be hot-tuned live.
+    // Set "Flywheel/Feed Now" to true on the dashboard (or press B) to feed a ball.
+    tunerController.a().whileTrue(new FlywheelTuningCommand(fuelSubsystem));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
