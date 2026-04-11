@@ -111,7 +111,7 @@ public class RobotContainer {
     //driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
-    operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    //operatorController.a().whileTrue(new Eject(fuelSubsystem));
     // Operator X button - intake down (reverse intake launcher roller)
     operatorController.x().whileTrue(new IntakeDown(fuelSubsystem, () -> 1.0));
     // Operator Y button - intake up (forward intake launcher roller)
@@ -137,7 +137,7 @@ public class RobotContainer {
     // Hold A to run the flywheel tuning command. While held, the flywheel spins
     // at the RPS set on the dashboard, and gains can be hot-tuned live.
     // Set "Flywheel/Feed Now" to true on the dashboard (or press B) to feed a ball.
-    tunerController.a().whileTrue(new FlywheelTuningCommand(fuelSubsystem));
+    operatorController.a().whileTrue(new FlywheelTuningCommand(fuelSubsystem));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
