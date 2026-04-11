@@ -17,6 +17,7 @@ import static frc.robot.Constants.FuelConstants.FLYWHEEL_KS;
 import static frc.robot.Constants.FuelConstants.FLYWHEEL_KV;
 import static frc.robot.Constants.FuelConstants.FLYWHEEL_KP;
 import static frc.robot.Constants.FuelConstants.FLYWHEEL_VELOCITY_TOLERANCE_RPS;
+import static frc.robot.Constants.FuelConstants.DEFAULT_LAUNCH_RPS;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -26,6 +27,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -98,7 +100,7 @@ public class CANFuelSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel/kS", FLYWHEEL_KS);
     SmartDashboard.putNumber("Flywheel/kV", FLYWHEEL_KV);
     SmartDashboard.putNumber("Flywheel/kP", FLYWHEEL_KP);
-    SmartDashboard.putNumber("Flywheel/Target RPS", 0);
+    SmartDashboard.putNumber("Flywheel/Target RPS", DEFAULT_LAUNCH_RPS);
     SmartDashboard.putNumber("Flywheel/Actual RPS", 0);
     SmartDashboard.putNumber("Flywheel/Error RPS", 0);
     SmartDashboard.putBoolean("Flywheel/At Target", false);
