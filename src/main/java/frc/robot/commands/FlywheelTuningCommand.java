@@ -91,7 +91,7 @@ public class FlywheelTuningCommand extends Command {
   @Override
   public void initialize() {
     // Seed "Feed Now" to false so the operator has to deliberately enable it
-    SmartDashboard.putBoolean("Flywheel/Feed Now", false);
+    //SmartDashboard.putBoolean("Flywheel/Feed Now", false);
 
     // Read and apply the current gains from the dashboard
     lastKS = SmartDashboard.getNumber("Flywheel/kS", FLYWHEEL_KS);
@@ -141,7 +141,7 @@ public class FlywheelTuningCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     fuelSubsystem.stop();
-    SmartDashboard.putBoolean("Flywheel/Feed Now", false);
+    //SmartDashboard.putBoolean("Flywheel/Feed Now", false);
   }
 
   @Override
