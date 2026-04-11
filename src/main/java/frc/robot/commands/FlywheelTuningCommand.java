@@ -91,7 +91,7 @@ public class FlywheelTuningCommand extends Command {
   @Override
   public void initialize() {
     // Seed "Feed Now" to false so the operator has to deliberately enable it
-    SmartDashboard.putBoolean("Flywheel/Feed Now", false);
+    //SmartDashboard.putBoolean("Flywheel/Feed Now", false);
 
     // Read and apply the current gains from the dashboard
     lastKS = SmartDashboard.getNumber("Flywheel/kS", FLYWHEEL_KS);
@@ -129,8 +129,8 @@ public class FlywheelTuningCommand extends Command {
     // ---- Feed on demand ----
     // When the operator sets "Flywheel/Feed Now" to true, run the feeder to
     // launch one ball. The operator should toggle it back to false after firing.
-    boolean feedNow = SmartDashboard.getBoolean("Flywheel/Feed Now", false);
-    if (feedNow && fuelSubsystem.isAtTargetVelocity()) {
+    //boolean feedNow = SmartDashboard.getBoolean("Flywheel/Feed Now", false);
+    if (fuelSubsystem.isAtTargetVelocity()) {
       fuelSubsystem.setFeederRoller(INDEXER_LAUNCHING_PERCENT);
     } else {
       // Keep feeder stopped (or at a gentle hold-back) while not feeding
@@ -141,7 +141,7 @@ public class FlywheelTuningCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     fuelSubsystem.stop();
-    SmartDashboard.putBoolean("Flywheel/Feed Now", false);
+    //SmartDashboard.putBoolean("Flywheel/Feed Now", false);
   }
 
   @Override
