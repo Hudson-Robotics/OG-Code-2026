@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
 import static frc.robot.Constants.LauncherConstants.*;
+import static frc.robot.Constants.FuelConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -23,8 +24,6 @@ import frc.robot.commands.DynamicClimbDown;
 import frc.robot.commands.DynamicClimbUp;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
-import frc.robot.commands.IntakeDown;
-import frc.robot.commands.IntakeUp;
 import frc.robot.commands.JiggleDown;
 import frc.robot.commands.JiggleUp;
 import frc.robot.commands.auto.JustShoot;
@@ -112,11 +111,13 @@ public class RobotContainer {
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
     //operatorController.a().whileTrue(new Eject(fuelSubsystem));
-    // Operator X button - intake down (reverse intake launcher roller)
-    operatorController.x().whileTrue(new IntakeDown(fuelSubsystem, () -> 1.0));
-    // Operator Y button - intake up (forward intake launcher roller)
-    operatorController.y().whileTrue(new IntakeUp(fuelSubsystem, () -> 1.0));
-    // Operator B button - far range shot
+    // Operator A button - short range flywheel shot at SHORT_RANGE_RPS
+    operatorController.a().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, SHORT_RANGE_RPS));
+    // Operator X button - medium range flywheel shot at MEDIUM_RANGE_RPS
+    operatorController.x().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, MEDIUM_RANGE_RPS));
+    // Operator Y button - far range flywheel shot at FAR_RANGE_RPS
+    operatorController.y().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, FAR_RANGE_RPS));
+    // Operator B button - far range shot (open-loop legacy)
     operatorController.b().whileTrue(new LaunchAtSpeed(fuelSubsystem, FAR_LAUNCH_SPEED, FAR_FEEDER_SPEED));
    // While the down arrow on the directional pad is held it will unclimb the robot
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
@@ -137,7 +138,7 @@ public class RobotContainer {
     // Hold A to run the flywheel tuning command. While held, the flywheel spins
     // at the RPS set on the dashboard, and gains can be hot-tuned live.
     // Set "Flywheel/Feed Now" to true on the dashboard (or press B) to feed a ball.
-    operatorController.a().whileTrue(new FlywheelTuningCommand(fuelSubsystem));
+    tunerController.a().whileTrue(new FlywheelTuningCommand(fuelSubsystem));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver

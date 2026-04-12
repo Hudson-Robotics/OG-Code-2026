@@ -79,6 +79,10 @@ public final class Constants {
     // Default target flywheel velocity for launching (rotations per second)
     // Negative because your launch direction is negative. Tune on the robot.
     public static final double DEFAULT_LAUNCH_RPS = -80.0;
+    // Preset flywheel velocities for different shooting distances (RPS)
+    public static final double SHORT_RANGE_RPS = -70.0;
+    public static final double MEDIUM_RANGE_RPS = -80.0;
+    public static final double FAR_RANGE_RPS = -90.0;
     // Feeder speed while the flywheel is spinning up (slow reverse to hold the ball back)
     public static final double FLYWHEEL_SPINUP_FEEDER_PERCENT = -0.05;
   }
