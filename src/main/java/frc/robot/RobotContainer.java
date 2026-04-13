@@ -32,10 +32,12 @@ import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.FlywheelLaunchSequence;
 import frc.robot.commands.FlywheelTuningCommand;
 import frc.robot.commands.Shuttle;
+import frc.robot.commands.AlignAndShoot;
 import frc.robot.commands.auto.ShootAndClimb;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -49,6 +51,7 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -118,6 +121,10 @@ public class RobotContainer {
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot
     driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
+
+    // Driver left bumper - auto-align to hub center and shoot at distance-based RPS
+    driverController.leftBumper().whileTrue(
+        new AlignAndShoot(visionSubsystem, driveSubsystem, fuelSubsystem));
 
     // While the left trigger on driver controller is held, climb down with variable speed
     driverController.leftTrigger(0.1).whileTrue(new DynamicClimbDown(climberSubsystem, () -> driverController.getLeftTriggerAxis()));

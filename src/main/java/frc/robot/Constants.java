@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -160,6 +163,24 @@ public final class Constants {
 
     // Proportional gain for the Pigeon heading correction during straight driving
     public static final double HEADING_CORRECTION_KP = 0.02;
+
+    // ---- Hub center points (meters, WPILib Blue-origin coordinate system) ----
+    // Computed from the average of all hub AprilTag positions in the 2026 AndyMark layout.
+    // Red hub tags: 2,3,4,5,8,9,10,11   Blue hub tags: 18,19,20,21,24,25,26,27
+    public static final Translation2d RED_HUB_CENTER = new Translation2d(11.9903, 4.0214);
+    public static final Translation2d BLUE_HUB_CENTER = new Translation2d(4.5227, 4.0214);
+
+    // ---- Distance-to-RPS interpolation for auto-aim shooting ----
+    // Maps distance (inches) → flywheel RPS (negative = launch direction).
+    // Linear interpolation is used between points; values outside the range are
+    // clamped to the nearest endpoint.
+    // Add more calibration points here as you tune on the field.
+    public static final InterpolatingDoubleTreeMap DISTANCE_TO_RPS_MAP = new InterpolatingDoubleTreeMap();
+    static {
+      // (distance in inches, flywheel RPS — negative for launch direction)
+      DISTANCE_TO_RPS_MAP.put(30.0, -60.0);
+      DISTANCE_TO_RPS_MAP.put(120.0, -90.0);
+    }
   }
 
   public static final class AutoConstants {

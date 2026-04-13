@@ -4,14 +4,23 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.AprilTagLocation;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.LimelightHelpers.RawFiducial;
 import static frc.robot.Constants.VisionConstants.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -21,6 +30,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   // Discard pose estimates based on only 1 tag if it's too far away (inches)
   private static final double MAX_SINGLE_TAG_DISTANCE = 60.0;
+
+  /** WPILib's official 2026 AndyMark field layout with all AprilTag poses. */
+  private final AprilTagFieldLayout fieldLayout =
+      AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
 
   public VisionSubsystem() {
   }
@@ -96,26 +109,20 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns an array of AprilTagLocations for all tags currently visible
-   * on the front Limelight, skipping any tag IDs not found in the enum.
+   * Returns a list of AprilTag objects (from the WPILib field layout) for all
+   * tags currently visible on the front Limelight.
    */
-  public AprilTagLocation[] getVisibleTags() {
+  public List<AprilTag> getVisibleTags() {
     RawFiducial[] fiducials = LimelightHelpers.getRawFiducials(LIMELIGHT_FRONT_NAME);
+    List<AprilTag> tags = new ArrayList<>();
     if (fiducials == null || fiducials.length == 0) {
-      return new AprilTagLocation[0];
+      return tags;
     }
-
-    // Count valid tags first to size the array
-    int validCount = 0;
     for (RawFiducial f : fiducials) {
-      if (AprilTagLocation.fromId(f.id) != null) validCount++;
-    }
-
-    AprilTagLocation[] tags = new AprilTagLocation[validCount];
-    int i = 0;
-    for (RawFiducial f : fiducials) {
-      AprilTagLocation tag = AprilTagLocation.fromId(f.id);
-      if (tag != null) tags[i++] = tag;
+      Optional<Pose3d> pose = fieldLayout.getTagPose(f.id);
+      if (pose.isPresent()) {
+        tags.add(new AprilTag(f.id, pose.get()));
+      }
     }
     return tags;
   }
@@ -145,6 +152,43 @@ public class VisionSubsystem extends SubsystemBase {
     double dist = getAvgTagDistance();
     if (dist < 0) return false;
     return Math.abs(dist - targetDistanceInches) <= distanceToleranceInches;
+  }
+
+  // -------------------------------------------------------------------------
+  //  Hub distance & alignment helpers
+  // -------------------------------------------------------------------------
+
+  /**
+   * Returns the hub center point for the current alliance as a Translation2d
+   * (in meters). Uses the average of the hub AprilTag positions from the WPILib
+   * field layout. Defaults to Blue alliance if no alliance info is available.
+   */
+  public Translation2d getHubCenter() {
+    var alliance = DriverStation.getAlliance();
+    boolean isRed = alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+    return isRed ? RED_HUB_CENTER : BLUE_HUB_CENTER;
+  }
+
+  /**
+   * Returns the distance in inches from the robot's current Limelight pose
+   * estimate to the hub center for the current alliance.
+   * Returns -1 if no reliable pose estimate is available.
+   */
+  public double getDistanceToHubInches() {
+    Pose2d pose = getRobotPose();
+    if (pose == null) {
+      return -1;
+    }
+    Translation2d hub = getHubCenter();
+    double distMeters = pose.getTranslation().getDistance(hub);
+    return distMeters / 0.0254; // convert meters to inches
+  }
+
+  /**
+   * Returns the WPILib field layout used by this subsystem.
+   */
+  public AprilTagFieldLayout getFieldLayout() {
+    return fieldLayout;
   }
 
   // -------------------------------------------------------------------------
@@ -181,11 +225,15 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Vision/Pose Heading", pose.getRotation().getDegrees());
     }
 
-    AprilTagLocation[] tags = getVisibleTags();
-    SmartDashboard.putNumber("Vision/Visible Tag Count", tags.length);
-    for (int i = 0; i < tags.length; i++) {
-      SmartDashboard.putString("Vision/Tag " + i, tags[i].toString());
+    List<AprilTag> tags = getVisibleTags();
+    SmartDashboard.putNumber("Vision/Visible Tag Count", tags.size());
+    for (int i = 0; i < tags.size(); i++) {
+      SmartDashboard.putString("Vision/Tag " + i, tags.get(i).toString());
     }
+
+    // Hub distance telemetry
+    double hubDist = getDistanceToHubInches();
+    SmartDashboard.putNumber("Vision/Hub Distance (in)", hubDist);
 
     // Back Limelight telemetry
     SmartDashboard.putBoolean("Vision/Back Has Target", hasTargetBack());
