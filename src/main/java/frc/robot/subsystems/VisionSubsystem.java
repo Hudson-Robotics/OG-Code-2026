@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -182,6 +183,39 @@ public class VisionSubsystem extends SubsystemBase {
     Translation2d hub = getHubCenter();
     double distMeters = pose.getTranslation().getDistance(hub);
     return distMeters / 0.0254; // convert meters to inches
+  }
+
+  /**
+   * Returns the heading error (in degrees) between the robot's current facing
+   * direction and the direction toward the hub center.
+   * <ul>
+   *   <li>Positive = hub is to the right → rotate right</li>
+   *   <li>Negative = hub is to the left  → rotate left</li>
+   * </ul>
+   * Returns 0 if no reliable pose estimate is available.
+   */
+  public double getAngleToHubDegrees() {
+    Pose2d pose = getRobotPose();
+    if (pose == null) {
+      return 0;
+    }
+    Translation2d hub = getHubCenter();
+    // Angle from robot to hub in field coordinates
+    Translation2d robotToHub = hub.minus(pose.getTranslation());
+    double desiredAngle = Math.toDegrees(Math.atan2(robotToHub.getY(), robotToHub.getX()));
+    double currentAngle = pose.getRotation().getDegrees();
+
+    // Wrap to shortest-path error in [-180, 180] — no loops needed
+    double error = MathUtil.inputModulus(desiredAngle - currentAngle, -180, 180);
+    return error;
+  }
+
+  /**
+   * Returns true if the robot is aimed at the hub center within the aim tolerance.
+   * Uses the full pose estimate (not just Limelight TX).
+   */
+  public boolean isAimedAtHub() {
+    return hasTarget() && Math.abs(getAngleToHubDegrees()) < AIM_TOLERANCE_DEGREES;
   }
 
   /**

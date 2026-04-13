@@ -55,11 +55,18 @@ public class AlignAndShoot extends Command {
       return;
     }
 
-    // --- Rotation: centre the target horizontally ---
+    // --- Rotation: align to the hub center, NOT just the visible tag ---
+    // getAngleToHubDegrees() computes the heading error from the robot's
+    // pose to the actual hub center point for the current alliance.
+    double headingError = visionSubsystem.getAngleToHubDegrees();
     double rotation = MathUtil.clamp(
-        visionSubsystem.getTX() * AIM_KP,
+        headingError * AIM_KP,
         -AIM_MAX_OUTPUT,
         AIM_MAX_OUTPUT);
+    // Deadband: snap small outputs to zero so we don't stall motors
+    if (Math.abs(rotation) < AIM_DEADBAND) {
+      rotation = 0;
+    }
     driveSubsystem.driveArcade(0, rotation);
 
     // --- Distance-based RPS lookup ---
@@ -72,7 +79,8 @@ public class AlignAndShoot extends Command {
     // Publish telemetry so drivers/pit crew can see what's happening
     SmartDashboard.putNumber("AlignAndShoot/Distance (in)", distanceInches);
     SmartDashboard.putNumber("AlignAndShoot/Target RPS", targetRPS);
-    SmartDashboard.putBoolean("AlignAndShoot/Aimed", visionSubsystem.isAimed());
+    SmartDashboard.putNumber("AlignAndShoot/Heading Error", headingError);
+    SmartDashboard.putBoolean("AlignAndShoot/Aimed At Hub", visionSubsystem.isAimedAtHub());
     SmartDashboard.putBoolean("AlignAndShoot/At Speed", fuelSubsystem.isAtTargetVelocity());
 
     // --- Flywheel: spin up to the computed RPS ---
@@ -80,8 +88,8 @@ public class AlignAndShoot extends Command {
       fuelSubsystem.setFlywheelVelocity(targetRPS);
     }
 
-    // --- Feeder: fire only when aimed AND flywheel is at speed ---
-    if (visionSubsystem.isAimed() && fuelSubsystem.isAtTargetVelocity() && targetRPS != 0) {
+    // --- Feeder: fire only when aimed at hub center AND flywheel is at speed ---
+    if (visionSubsystem.isAimedAtHub() && fuelSubsystem.isAtTargetVelocity() && targetRPS != 0) {
       fuelSubsystem.setFeederRoller(LAUNCH_FEEDER_PERCENT);
     } else {
       fuelSubsystem.setFeederRoller(FLYWHEEL_SPINUP_FEEDER_PERCENT);

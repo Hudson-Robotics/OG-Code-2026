@@ -152,6 +152,10 @@ public final class Constants {
     // Maximum rotation speed (0-1) while aiming to avoid overshooting
     public static final double AIM_MAX_OUTPUT = 0.5;
 
+    // Minimum rotation output — below this the motors stall and draw current
+    // without moving. Any output smaller than this is snapped to zero.
+    public static final double AIM_DEADBAND = 0.05;
+
     // Target distance from the hub in inches (~6 feet)
     public static final double AIM_TARGET_DISTANCE_INCHES = 72.0;
     // How close to the target distance (in inches) before we consider it "in range"
