@@ -51,9 +51,10 @@ public class FlywheelLaunchSequence extends Command {
     // Keep commanding the flywheel every loop
     fuelSubsystem.setFlywheelVelocity(targetRPS);
 
-    // Once at speed, feed the ball; otherwise keep holding
+    // Once at speed, feed the ball toward the shooter (positive feeder);
+    // otherwise keep feeder still to hold ball in hopper
     if (fuelSubsystem.isAtTargetVelocity()) {
-      fuelSubsystem.setFeederRoller(INDEXER_LAUNCHING_PERCENT);
+      fuelSubsystem.setFeederRoller(LAUNCH_FEEDER_PERCENT);
     } else {
       fuelSubsystem.setFeederRoller(FLYWHEEL_SPINUP_FEEDER_PERCENT);
     }

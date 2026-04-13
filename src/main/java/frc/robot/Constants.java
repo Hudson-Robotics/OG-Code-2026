@@ -56,10 +56,28 @@ public final class Constants {
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 100;
 
     // All values likely need to be tuned based on your robot
+    // ---- Ball path reference ----
+    // Negative intake + positive feeder = field → intake → hopper (INTAKING)
+    // Negative intake + negative feeder = hopper → shooter (SHOOTING)
+    // Positive intake + positive feeder = hopper → back out intake (EJECT)
+    // Positive intake + negative feeder = intake → shooter / bypass hopper (SHUTTLE/PASS)
+    //
+    // Intake from field into hopper (-intake, +feeder)
+    public static final double INTAKE_ROLLER_PERCENT = -0.7;
+    public static final double INTAKE_FEEDER_PERCENT = 0.8;
+    // Feed from hopper to shooter (-feeder pushes toward shooter)
+    public static final double LAUNCH_FEEDER_PERCENT = -0.7;
+    // Eject back out of the intake (+intake, +feeder)
+    public static final double EJECT_ROLLER_PERCENT = 0.9;
+    public static final double EJECT_FEEDER_PERCENT = 0.8;
+    // Shuttle/pass: bypass hopper, go straight from intake to shooter (+intake, -feeder)
+    public static final double SHUTTLE_ROLLER_PERCENT = 0.7;
+    public static final double SHUTTLE_FEEDER_PERCENT = -0.7;
+
+    // Legacy / unused
     public static final double INDEXER_INTAKING_PERCENT = -.8; 
     public static final double INDEXER_LAUNCHING_PERCENT = -0.7;
     public static final double INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.6;
-
     public static final double INTAKE_INTAKING_PERCENT = -0.7;
     public static final double LAUNCHING_LAUNCHER_PERCENT = -.95;
     public static final double INTAKE_EJECT_PERCENT = 0.9;
@@ -83,6 +101,8 @@ public final class Constants {
     public static final double SHORT_RANGE_RPS = -70.0;
     public static final double MEDIUM_RANGE_RPS = -80.0;
     public static final double FAR_RANGE_RPS = -90.0;
+    // Shuttle/pass flywheel velocity (RPS)
+    public static final double SHUTTLE_RPS = -90.0;
     // Feeder speed while the flywheel is spinning up (slow reverse to hold the ball back)
     public static final double FLYWHEEL_SPINUP_FEEDER_PERCENT = -0.05;
   }

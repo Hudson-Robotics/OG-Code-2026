@@ -31,6 +31,7 @@ import frc.robot.commands.LaunchAtSpeed;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.FlywheelLaunchSequence;
 import frc.robot.commands.FlywheelTuningCommand;
+import frc.robot.commands.Shuttle;
 import frc.robot.commands.auto.ShootAndClimb;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
@@ -101,24 +102,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // While the left bumper on operator controller is held, intake Fuel
-    operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
-    // While the right bumper is held, spin up the flywheel to target RPS using
-    // closed-loop velocity control, then feed the ball once at speed.
-    operatorController.rightBumper().whileTrue(new FlywheelLaunchSequence(fuelSubsystem));
-    // While B is held, aim at the target using Limelight, then spin up and launch
-    //driverController.b().whileTrue(new LaunchSequenceWithAim(fuelSubsystem, visionSubsystem, driveSubsystem));
-    // While the A button is held on the operator controller, eject fuel back out
-    // the intake
-    //operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    // Operator B button - intake fuel into hopper
+    operatorController.b().whileTrue(new Intake(fuelSubsystem));
+    // Operator left bumper - eject ball back out the intake
+    operatorController.leftBumper().whileTrue(new Eject(fuelSubsystem));
+    // Operator right bumper - shuttle/pass: flywheel at SHUTTLE_RPS, bypass hopper
+    operatorController.rightBumper().whileTrue(new Shuttle(fuelSubsystem));
     // Operator A button - short range flywheel shot at SHORT_RANGE_RPS
     operatorController.a().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, SHORT_RANGE_RPS));
     // Operator X button - medium range flywheel shot at MEDIUM_RANGE_RPS
     operatorController.x().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, MEDIUM_RANGE_RPS));
     // Operator Y button - far range flywheel shot at FAR_RANGE_RPS
     operatorController.y().whileTrue(new FlywheelLaunchSequence(fuelSubsystem, FAR_RANGE_RPS));
-    // Operator B button - far range shot (open-loop legacy)
-    operatorController.b().whileTrue(new LaunchAtSpeed(fuelSubsystem, FAR_LAUNCH_SPEED, FAR_FEEDER_SPEED));
    // While the down arrow on the directional pad is held it will unclimb the robot
     driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
     // While the up arrow on the directional pad is held it will cimb the robot

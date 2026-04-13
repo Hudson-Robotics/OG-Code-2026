@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANFuelSubsystem;
 import static frc.robot.Constants.FuelConstants.*;
@@ -24,10 +23,9 @@ public class Eject extends Command {
   // appropriate values for ejecting
   @Override
   public void initialize() {
-    fuelSubsystem
-        .setIntakeLauncherRoller(
-             SmartDashboard.getNumber("Intaking intake roller value", INTAKE_EJECT_PERCENT));
-     fuelSubsystem.setFeederRoller(SmartDashboard.getNumber("Intaking intake roller value", INDEXER_LAUNCHING_PERCENT));
+    // Positive intake pushes ball out, positive feeder moves ball from hopper toward intake
+    fuelSubsystem.setIntakeLauncherRoller(EJECT_ROLLER_PERCENT);
+    fuelSubsystem.setFeederRoller(EJECT_FEEDER_PERCENT);
   }
 
   // Called every time the scheduler runs while the command is scheduled. This

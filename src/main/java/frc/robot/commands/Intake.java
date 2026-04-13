@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANFuelSubsystem;
 import static frc.robot.Constants.FuelConstants.*;
@@ -24,9 +23,9 @@ public class Intake extends Command {
   // appropriate values for intaking
   @Override
   public void initialize() {
-    fuelSubsystem
-        .setIntakeLauncherRoller(SmartDashboard.getNumber("Intaking intake roller value", INTAKE_INTAKING_PERCENT));
-    fuelSubsystem.setFeederRoller(SmartDashboard.getNumber("Intaking feeder roller value", INDEXER_INTAKING_PERCENT));
+    // Negative intake pulls ball in from field, negative feeder moves it into hopper
+    fuelSubsystem.setIntakeLauncherRoller(INTAKE_ROLLER_PERCENT);
+    fuelSubsystem.setFeederRoller(INTAKE_FEEDER_PERCENT);
   }
 
   // Called every time the scheduler runs while the command is scheduled. This

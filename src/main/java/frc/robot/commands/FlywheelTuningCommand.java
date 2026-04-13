@@ -127,13 +127,12 @@ public class FlywheelTuningCommand extends Command {
     }
 
     // ---- Feed on demand ----
-    // When the operator sets "Flywheel/Feed Now" to true, run the feeder to
-    // launch one ball. The operator should toggle it back to false after firing.
+    // When at target velocity, feed the ball toward the shooter (positive feeder)
     boolean feedNow = SmartDashboard.getBoolean("Flywheel/Feed Now", false);
     if (fuelSubsystem.isAtTargetVelocity()) {
-      fuelSubsystem.setFeederRoller(INDEXER_LAUNCHING_PERCENT);
+      fuelSubsystem.setFeederRoller(LAUNCH_FEEDER_PERCENT);
     } else {
-      // Keep feeder stopped (or at a gentle hold-back) while not feeding
+      // Keep feeder stopped while not at speed
       fuelSubsystem.setFeederRoller(0);
     }
   }
